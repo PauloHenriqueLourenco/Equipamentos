@@ -272,7 +272,29 @@ public class FUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
+        if ("".equals(edtNome.getText()) || "".equals(edtLogin.getText()) || "".equals(String.valueOf(edtSenha.getPassword())) || "".equals(String.valueOf(edtCSenha.getPassword())))
+            JOptionPane.showOptionDialog(null,"Por favor, preencha todos os campos","Campo Vazio",JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,null, null, null);
+        else{
+            if (!String.valueOf(edtSenha.getPassword()).equals(String.valueOf(edtCSenha.getPassword())))
+                JOptionPane.showOptionDialog(null,"Campo senha diferente de confirma senha","Confirma Senha",JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,null, null, null);
+            else {
+                u.setNome(edtNome.getText());
+                u.setLogin(edtLogin.getText());
+                u.setSenha(String.valueOf(edtSenha.getPassword()));
+                u.setTipo(ctrlU.encontrarCodigo((String) cbTipo.getSelectedItem()));
+                int resp=JOptionPane.showConfirmDialog(null,"Deseja realmente alterar os dados do login "+u.getLogin()+" ?");
+                if(resp==JOptionPane.YES_OPTION){
+                int erro=ctrlU.alterarUsuario(u);
+                if(erro==0){
+                    JOptionPane.showMessageDialog(null,"Alteração concluída com êxito");
+                    resetar();
+                }else
+                    JOptionPane.showMessageDialog(null,"Falha na alteração");
+                }
+            }
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
