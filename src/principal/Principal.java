@@ -5,8 +5,13 @@
  */
 package principal;
 
+import DAO.ctrlUsuario;
 import ajuda.*;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import modelo.Usuario;
 
 /**
  *
@@ -14,6 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
+    Usuario u = new Usuario();
+    ctrlUsuario ctrlU = new ctrlUsuario();
+    
     /**
      * Creates new form Principal
      */
@@ -54,6 +62,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Equipamentos ETER");
@@ -221,6 +230,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem16);
 
+        jMenuItem19.setText("Meu Login");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem19);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -353,11 +370,45 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        FUsuario fu = new FUsuario();
-        fu.setLocationRelativeTo(null);
-        fu.setResizable(false);
-        fu.setVisible(true);
+        if (FLogin.u.getTipo()!=1)
+            JOptionPane.showOptionDialog(null,"Acesso Negado!","Acesso Negado!",JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,null, null, null);
+        else {
+            FUsuario fu = new FUsuario();
+            fu.setLocationRelativeTo(null);
+            fu.setResizable(false);
+            fu.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        // Cria campo onde o usuario entra com a senha
+	JPasswordField password = new JPasswordField(10);
+	password.setEchoChar('*'); 
+	// Cria um rótulo para o campo
+	JLabel rotulo = new JLabel("Entre com a senha:");
+	// Coloca o rótulo e a caixa de entrada numa JPanel:
+	JPanel entUsuario = new JPanel();
+	entUsuario.add(rotulo);
+	entUsuario.add(password);
+	// Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
+	JOptionPane.showMessageDialog(null, entUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+	// O programa só prossegue quando o usuário clicar o botao de OK do showMessageDialog. 
+	// Aí, é só pegar a senha:
+	// Captura a senha:
+	String senha = String.valueOf(password.getPassword());
+        String login=FLogin.u.getLogin();
+        int rc=ctrlU.conectar(login,senha);
+        if (rc==1){
+            FMeuLogin fml = new FMeuLogin();
+            fml.setLocationRelativeTo(null);
+            fml.setResizable(false);
+            fml.setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(null,"Usuário ou senha inválidos!");
+        }
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -413,6 +464,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

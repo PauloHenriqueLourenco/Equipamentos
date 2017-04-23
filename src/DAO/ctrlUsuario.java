@@ -12,6 +12,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import modelo.Conexao;
 import modelo.Usuario;
+import principal.FLogin;
 
 /**
  *
@@ -38,7 +39,41 @@ public class ctrlUsuario {
    
    public int alterarUsuario(Usuario u){
        int rc=0;
-       String sql = "UPDATE usuario SET nome='"+u.getNome()+"', login='"+u.getLogin()+"', password='"+u.getSenha()+"',codigo_tipo_usuario="+u.getTipo();
+       String sql = "UPDATE usuario SET nome='"+u.getNome()+"', password=MD5('"+u.getSenha()+"'),codigo_tipo_usuario="+u.getTipo()+" WHERE login='"+u.getLogin()+"'";
+       Connection cn = Conexao.getConnection();
+       System.out.println(sql);
+       try{
+           Statement st = cn.createStatement();
+           st.executeUpdate(sql);
+           rc=0;
+           cn.close();
+       }catch(SQLException e){
+           rc=111;
+           e.printStackTrace();
+       }
+      return rc;
+   }
+   
+   public int alterarNome(String nome){
+       int rc=0;
+       String sql = "UPDATE usuario SET nome='"+nome+"' WHERE login='"+FLogin.u.getLogin()+"'";
+       Connection cn = Conexao.getConnection();
+       System.out.println(sql);
+       try{
+           Statement st = cn.createStatement();
+           st.executeUpdate(sql);
+           rc=0;
+           cn.close();
+       }catch(SQLException e){
+           rc=111;
+           e.printStackTrace();
+       }
+      return rc;
+   }
+   
+   public int alterarSenha(String senha){
+       int rc=0;
+       String sql = "UPDATE usuario SET password='"+senha+"' WHERE login='"+FLogin.u.getLogin()+"'";
        Connection cn = Conexao.getConnection();
        System.out.println(sql);
        try{
@@ -70,7 +105,7 @@ public class ctrlUsuario {
       return rc;
    }
    
-   public int conectar(String login, String senha,Usuario u){
+   public int conectar(String login, String senha){
        int rc=111;
        String sql = "SELECT fun_valida_usuario('"+login+"','"+senha+"')";
        Connection cn = Conexao.getConnection();

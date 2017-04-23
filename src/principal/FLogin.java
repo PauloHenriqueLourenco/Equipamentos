@@ -16,7 +16,7 @@ import modelo.Usuario;
  */
 public class FLogin extends javax.swing.JFrame {
     ctrlUsuario ctrlU = new ctrlUsuario();
-    Usuario u = new Usuario();
+    public static final Usuario u = new Usuario();
     
     /**
      * Creates new form FLogin
@@ -96,7 +96,7 @@ public class FLogin extends javax.swing.JFrame {
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
         String login=edtLogin.getText();
         String senha= String.valueOf(edtSenha.getPassword());
-        int rc=ctrlU.conectar(login,senha, u);
+        int rc=ctrlU.conectar(login,senha);
         if (rc==1){
             ctrlU.consultar(login,u.getNome(), u);
             setVisible(false);
