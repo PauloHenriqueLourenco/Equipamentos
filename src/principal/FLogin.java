@@ -107,7 +107,7 @@ public class FLogin extends javax.swing.JFrame {
         }
         else {
             JOptionPane.showMessageDialog(null,"Usuário ou senha inválidos!");
-             edtSenha.setText("");
+            edtSenha.setText("");
         }
     }//GEN-LAST:event_btnAcessarActionPerformed
 

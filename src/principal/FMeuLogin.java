@@ -140,43 +140,46 @@ public class FMeuLogin extends javax.swing.JFrame {
         edtLogin.setEnabled(false);
         edtNome.setText(FLogin.u.getNome());
         edtLogin.setText(FLogin.u.getLogin());
+        edtTipo.setText(ctrlU.encontrarTipo(FLogin.u.getTipo()));
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int resp=JOptionPane.CANCEL_OPTION;
         String password="a";
         String password2="b";
-        // Cria campo onde o usuario entra com a senha
 	JPasswordField senha = new JPasswordField(10);
 	senha.setEchoChar('*'); 
-	// Cria um rótulo para o campo
 	JLabel rotulo = new JLabel("Nova Senha:");
-	// Coloca o rótulo e a caixa de entrada numa JPanel:
 	JPanel entUsuario = new JPanel();
 	entUsuario.add(rotulo);
 	entUsuario.add(senha);
         JPasswordField cSenha = new JPasswordField(10);
 	cSenha.setEchoChar('*'); 
-	// Cria um rótulo para o campo
 	JLabel rotulo2 = new JLabel("Confirma Nova Senha:");
 	entUsuario.add(rotulo2);
 	entUsuario.add(cSenha);	
-        while (!password.equals(password2)){
-            // Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
-            JOptionPane.showMessageDialog(null, entUsuario, "Mudança de Senha", JOptionPane.PLAIN_MESSAGE);
-            // O programa só prossegue quando o usuário clicar o botao de OK do showMessageDialog. 
-            // Aí, é só pegar a senha:
-            // Captura a senha:
+        while (!password.equals(password2) ){
+            senha.setText(null);
+            cSenha.setText(null);
+            resp=JOptionPane.showOptionDialog(null,entUsuario,"Mudança de Senha",JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.OK_CANCEL_OPTION,null, null, null);
             password = String.valueOf(senha.getPassword());
             password2 = String.valueOf(cSenha.getPassword());
+            if (resp==JOptionPane.CANCEL_OPTION || resp==JOptionPane.CLOSED_OPTION || (password.isEmpty() && password2.isEmpty())) break;
+            if (!password.equals(password2)) 
+                JOptionPane.showOptionDialog(null,"Campo senha diferente de confirma senha ou campo em branco","ERRO",JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE,null, null, null);            
         }
-        int resp=JOptionPane.showConfirmDialog(null,"Deseja realmente alterar o sua senha ?");
-        if(resp==JOptionPane.YES_OPTION){                
-            int erro=ctrlU.alterarSenha(password);
-            if(erro==0){
-                JOptionPane.showMessageDialog(null,"Alteração concluída com êxito");
-            }else
-                JOptionPane.showMessageDialog(null,"Falha na alteração");
+        if (resp==JOptionPane.OK_OPTION && !password.isEmpty()){
+            resp=JOptionPane.showConfirmDialog(null,"Deseja realmente alterar o sua senha ?");
+            if(resp==JOptionPane.YES_OPTION){                
+                int erro=ctrlU.alterarSenha(password);
+                if(erro==0){
+                    JOptionPane.showMessageDialog(null,"Alteração concluída com êxito");
+                }else
+                    JOptionPane.showMessageDialog(null,"Falha na alteração");
             }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
