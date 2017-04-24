@@ -382,31 +382,26 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        // Cria campo onde o usuario entra com a senha
-	JPasswordField password = new JPasswordField(10);
+        JPasswordField password = new JPasswordField(10);
 	password.setEchoChar('*'); 
-	// Cria um rótulo para o campo
 	JLabel rotulo = new JLabel("Entre com a senha:");
-	// Coloca o rótulo e a caixa de entrada numa JPanel:
 	JPanel entUsuario = new JPanel();
 	entUsuario.add(rotulo);
 	entUsuario.add(password);
-	// Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
-	JOptionPane.showMessageDialog(null, entUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
-	// O programa só prossegue quando o usuário clicar o botao de OK do showMessageDialog. 
-	// Aí, é só pegar a senha:
-	// Captura a senha:
-	String senha = String.valueOf(password.getPassword());
-        String login=FLogin.u.getLogin();
-        int rc=ctrlU.conectar(login,senha);
-        if (rc==1){
-            FMeuLogin fml = new FMeuLogin();
-            fml.setLocationRelativeTo(null);
-            fml.setResizable(false);
-            fml.setVisible(true);
-        }
-        else {
-            JOptionPane.showMessageDialog(null,"Usuário ou senha inválidos!");
+	int resp=JOptionPane.showOptionDialog(null,entUsuario,"Acesso Restrito",JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.OK_CANCEL_OPTION,null, null, null);
+        if(resp==JOptionPane.OK_OPTION){
+            String senha = String.valueOf(password.getPassword());
+            String login=FLogin.u.getLogin();
+            int rc=ctrlU.conectar(login,senha);
+            if (rc==1){
+                FMeuLogin fml = new FMeuLogin();
+                fml.setLocationRelativeTo(null);
+                fml.setResizable(false);
+                fml.setVisible(true);
+            }
+            else 
+                JOptionPane.showMessageDialog(null,"Usuário ou senha inválidos!");            
         }
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
